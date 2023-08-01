@@ -1,13 +1,12 @@
+import { Typography } from 'antd';
 import styled from 'styled-components';
 
-export const BoxInput = styled.div``;
+const { Text } = Typography;
 
-export const TitleInput = styled.h3`
-  color: #000;
-  font-family: Poppins;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
+export const BoxInput = styled.div`
+  width: 100%;
+`;
+
+export const TitleInput = styled(Text)`
   margin: 8px;
 `;
