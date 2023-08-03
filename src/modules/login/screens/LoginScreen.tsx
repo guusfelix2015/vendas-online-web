@@ -3,10 +3,12 @@ import { useState } from 'react';
 import Button from '../../../shared/components/button/button';
 import SVGLogo from '../../../shared/components/icons/SVGLogo';
 import Input from '../../../shared/components/input/input';
+import { useGlobalContext } from '../../../shared/hooks/useGlobalContext';
 import { useRequests } from '../../../shared/hooks/useRequest';
 import { BackgroundImage, ContainerLogin, ContainerLoginScreen, LimitedContainer, TitleLogin } from '../styles/LoginScreen.styles';
 
 const LoginScreen = () => {
+  const { accessToken, setAcessToken } = useGlobalContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { postRequest, loading } = useRequests();
@@ -20,6 +22,7 @@ const LoginScreen = () => {
   };
 
   const handleLogin = async () => {
+    setAcessToken('novo token');
     postRequest('http://localhost:8080/auth', { email, password });
   };
 
@@ -29,7 +32,7 @@ const LoginScreen = () => {
         <LimitedContainer>
           <SVGLogo />
           <TitleLogin type="secondary" level={2}>
-            Login
+            Login {accessToken}
           </TitleLogin>
           <Input margin="32px 0px 0px" title="USUÁRIO" onChange={handleEmail} value={email} />
           <Input margin="32px 0px 0px" type="password" title="SENHA" onChange={handlePassword} value={password} />
