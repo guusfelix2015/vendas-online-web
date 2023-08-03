@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 
+import { connectionAPIPost } from '../functions/connection/connectionAPI';
 import { useGlobalContext } from './useGlobalContext';
 
 export const useRequests = () => {
@@ -16,21 +17,17 @@ export const useRequests = () => {
       .then((response) => {
         return response.data;
       })
-      .catch(() => {
-        setNotification('Houve um erro ao buscar dados', 'error');
+      .catch((error: Error) => {
+        setNotification(error.message, 'error');
       });
   };
 
   const postRequest = async (url: string, body: unknown) => {
     setLoading(true);
-    const returnData = await axios({
-      method: 'post',
-      url: url,
-      data: body,
-    })
-      .then((response) => {
+    const returnData = connectionAPIPost(url, body)
+      .then((data) => {
         setNotification('Foii...', 'success');
-        return response.data;
+        return data;
       })
       .catch(() => {
         setNotification('Senha inválida', 'success');
