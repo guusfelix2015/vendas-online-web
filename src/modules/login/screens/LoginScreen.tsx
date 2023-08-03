@@ -1,14 +1,15 @@
-import axios from 'axios';
 import { useState } from 'react';
 
-import Button from '../../../shared/button/button';
-import SVGLogo from '../../../shared/icons/SVGLogo';
-import Input from '../../../shared/input/input';
+import Button from '../../../shared/components/button/button';
+import SVGLogo from '../../../shared/components/icons/SVGLogo';
+import Input from '../../../shared/components/input/input';
+import { useRequests } from '../../../shared/hooks/useRequest';
 import { BackgroundImage, ContainerLogin, ContainerLoginScreen, LimitedContainer, TitleLogin } from '../styles/LoginScreen.styles';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { postRequest, loading } = useRequests();
 
   const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -19,23 +20,7 @@ const LoginScreen = () => {
   };
 
   const handleLogin = async () => {
-    await axios({
-      method: 'post',
-      url: 'http://localhost:8080/auth',
-      data: {
-        email: email,
-        password: password,
-      },
-    })
-      .then((response) => {
-        console.log('response', response);
-        alert(`Login efetuado com sucesso! ${response.data.accessToken}`);
-        return response.data;
-      })
-      .catch((error) => {
-        console.log('error', error);
-        alert('Erro ao efetuar login!');
-      });
+    postRequest('http://localhost:8080/auth', { email, password });
   };
 
   return (
@@ -48,7 +33,7 @@ const LoginScreen = () => {
           </TitleLogin>
           <Input margin="32px 0px 0px" title="USUÁRIO" onChange={handleEmail} value={email} />
           <Input margin="32px 0px 0px" type="password" title="SENHA" onChange={handlePassword} value={password} />
-          <Button margin="64px 0 16px 0" type="primary" onClick={handleLogin}>
+          <Button loading={loading} margin="64px 0 16px 0" type="primary" onClick={handleLogin}>
             ENTRAR
           </Button>
         </LimitedContainer>
