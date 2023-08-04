@@ -9,7 +9,6 @@ import { BackgroundImage, ContainerLogin, ContainerLoginScreen, LimitedContainer
 import { UserType } from '../types/UserTypes';
 
 const LoginScreen = () => {
-  const { accessToken, setAccessToken } = useGlobalContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { postRequest, loading } = useRequests();
@@ -22,10 +21,8 @@ const LoginScreen = () => {
     setPassword(event.target.value);
   };
 
-  const handleLogin = async () => {
-    const user = await postRequest<UserType>('http://localhost:8080/auth', { email, password });
-
-    setAccessToken(user?.accessToken ?? '');
+  const handleLogin = () => {
+    postRequest<UserType>('http://localhost:8080/auth', { email, password });
   };
 
   return (
@@ -34,7 +31,7 @@ const LoginScreen = () => {
         <LimitedContainer>
           <SVGLogo />
           <TitleLogin type="secondary" level={2}>
-            Login {accessToken}
+            Login
           </TitleLogin>
           <Input margin="32px 0px 0px" title="USUÁRIO" onChange={handleEmail} value={email} />
           <Input margin="32px 0px 0px" type="password" title="SENHA" onChange={handlePassword} value={password} />

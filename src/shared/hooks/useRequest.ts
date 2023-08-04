@@ -30,6 +30,7 @@ export const useRequests = () => {
         return result;
       })
       .catch((error: Error) => {
+        console.log('err');
         setNotification(error.message, 'error');
         return undefined;
       });
