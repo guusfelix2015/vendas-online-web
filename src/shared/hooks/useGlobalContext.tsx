@@ -33,6 +33,14 @@ export const GlobalProvider = ({ children }: GLobalProviderProps) => {
 export const useGlobalContext = () => {
   const { globalData, setGlobalData } = useContext(GlobalContext);
 
+  useEffect(() => {
+    const token = getAuthorizationToken();
+
+    if (token) {
+      setAccessToken(token);
+    }
+  }, []);
+
   const setAccessToken = (accessToken: string) => {
     setAuthorizationToken(accessToken);
     setGlobalData({ ...globalData, accessToken });

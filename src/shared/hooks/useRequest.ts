@@ -24,7 +24,7 @@ export const useRequests = () => {
 
   const postRequest = async <T>(url: string, body: unknown): Promise<T | undefined> => {
     setLoading(true);
-    const returnData = await (connectionAPIPost<T>(url, body) as Promise<T>)
+    const returnData = await connectionAPIPost<T>(url, body)
       .then((result) => {
         setNotification('Foii...', 'success');
         return result;

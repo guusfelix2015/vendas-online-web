@@ -12,6 +12,7 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { postRequest, loading } = useRequests();
+  const { setAccessToken, accessToken } = useGlobalContext();
 
   const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -21,8 +22,10 @@ const LoginScreen = () => {
     setPassword(event.target.value);
   };
 
-  const handleLogin = () => {
-    postRequest<UserType>('http://localhost:8080/auth', { email, password });
+  const handleLogin = async () => {
+    const user = await postRequest<UserType>('http://localhost:8080/auth', { email, password });
+
+    setAccessToken(user?.accessToken ?? '');
   };
 
   return (
@@ -31,7 +34,7 @@ const LoginScreen = () => {
         <LimitedContainer>
           <SVGLogo />
           <TitleLogin type="secondary" level={2}>
-            Login
+            Login {accessToken}
           </TitleLogin>
           <Input margin="32px 0px 0px" title="USUÁRIO" onChange={handleEmail} value={email} />
           <Input margin="32px 0px 0px" type="password" title="SENHA" onChange={handlePassword} value={password} />

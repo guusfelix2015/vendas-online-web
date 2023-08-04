@@ -8,6 +8,7 @@ import { ProductRoutesEnum } from '../../product/routes';
 
 const FirstScreen = () => {
   const navigate = useNavigate();
+
   useEffect(() => {
     const token = getAuthorizationToken();
 
