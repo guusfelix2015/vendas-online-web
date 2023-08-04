@@ -22,15 +22,16 @@ export const useRequests = () => {
       });
   };
 
-  const postRequest = async (url: string, body: unknown) => {
+  const postRequest = async <T>(url: string, body: unknown): Promise<T | undefined> => {
     setLoading(true);
-    const returnData = connectionAPIPost(url, body)
-      .then((data) => {
+    const returnData = await (connectionAPIPost<T>(url, body) as Promise<T>)
+      .then((result) => {
         setNotification('Foii...', 'success');
-        return data;
+        return result;
       })
-      .catch(() => {
-        setNotification('Senha inválida', 'success');
+      .catch((error: Error) => {
+        setNotification(error.message, 'error');
+        return undefined;
       });
     setLoading(false);
 
