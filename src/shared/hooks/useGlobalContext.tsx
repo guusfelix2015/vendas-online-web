@@ -9,9 +9,10 @@ interface NotificationProps {
   type: NotificationType;
   description?: string;
 }
+
 interface GlobalData {
-  notification?: NotificationProps;
   user?: UserType;
+  notification?: NotificationProps;
 }
 
 interface GlobalContext {
@@ -51,10 +52,18 @@ export const useGlobalContext = () => {
     });
   };
 
+  const updateGlobalData = (newGlobalData: GlobalData) => {
+    setGlobalData({
+      ...globalData,
+      ...newGlobalData,
+    });
+  };
+
   return {
     notification: globalData?.notification,
-    user: globalData.user,
+    user: globalData?.user,
     setUser,
     setNotification,
+    updateGlobalData,
   };
 };
